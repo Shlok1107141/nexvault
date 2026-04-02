@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NexVault · Finance</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── SIDEBAR ── -->
+  <aside class="sidebar">
+    <div class="logo">
+      <span class="logo-icon">⚡</span>
+      <div>
+        <div class="logo-name">NexVault</div>
+        <div class="logo-sub">Finance Tracker</div>
+      </div>
+    </div>
+
+    <nav>
+      <button class="nav-btn active" data-page="dashboard">
+        <span>▦</span> Dashboard
+      </button>
+      <button class="nav-btn" data-page="transactions">
+        <span>↕</span> Transactions
+      </button>
+      <button class="nav-btn" data-page="analytics">
+        <span>◫</span> Analytics
+      </button>
+    </nav>
+
+    <div class="balance-card">
+      <div class="balance-label">NET BALANCE</div>
+      <div class="balance-amount" id="sidebar-balance">$0.00</div>
+      <div class="balance-sub" id="sidebar-balance-sub">calculating…</div>
+    </div>
+  </aside>
+
+  <!-- ── MAIN ── -->
+  <main class="main">
+
+    <!-- Top bar -->
+    <header class="topbar">
+      <div>
+        <div class="page-title" id="page-title">Dashboard</div>
+        <div class="page-date" id="page-date"></div>
+      </div>
+      <div class="topbar-stats">
+        <div class="topbar-stat">
+          <div class="ts-label">Income</div>
+          <div class="ts-val green" id="top-income">$0</div>
+        </div>
+        <div class="topbar-stat">
+          <div class="ts-label">Expenses</div>
+          <div class="ts-val red" id="top-expense">$0</div>
+        </div>
+        <div class="topbar-avatar">N</div>
+      </div>
+    </header>
+
+    <!-- ── PAGE: DASHBOARD ── -->
+    <section class="page active" id="page-dashboard">
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-emoji">💰</div>
+          <div class="kpi-label">TOTAL INCOME</div>
+          <div class="kpi-value green" id="kpi-income">$0</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-emoji">💸</div>
+          <div class="kpi-label">TOTAL EXPENSES</div>
+          <div class="kpi-value red" id="kpi-expense">$0</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-emoji">⚖️</div>
+          <div class="kpi-label">NET BALANCE</div>
+          <div class="kpi-value" id="kpi-balance">$0</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-emoji">🎯</div>
+          <div class="kpi-label">SAVINGS RATE</div>
+          <div class="kpi-value purple" id="kpi-rate">0%</div>
+        </div>
+      </div>
+
+      <div class="charts-row">
+        <div class="card">
+          <div class="card-title">Expenses by Category</div>
+          <div class="donut-wrap">
+            <svg id="donut-svg" viewBox="0 0 180 180" width="180" height="180"></svg>
+            <div class="donut-center">
+              <div class="donut-total" id="donut-total">$0</div>
+              <div class="donut-sub">total spent</div>
+            </div>
+          </div>
+          <div class="legend" id="donut-legend"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Monthly Overview</div>
+          <div class="bar-chart-wrap">
+            <div class="bar-chart" id="bar-chart"></div>
+          </div>
+          <div class="bar-legend">
+            <span class="bl-dot green"></span>Income
+            <span style="margin:0 6px"></span><span class="bl-dot purple"></span>Expenses
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Recent Transactions</div>
+        <div id="recent-list"></div>
+      </div>
+    </section>
+
+    <!-- ── PAGE: TRANSACTIONS ── -->
+    <section class="page" id="page-transactions">
+      <div class="tx-toolbar">
+        <div class="pill-group">
+          <button class="pill active" data-filter="all">All</button>
+          <button class="pill" data-filter="income">Income</button>
+          <button class="pill" data-filter="expense">Expense</button>
+        </div>
+        <div class="tx-right">
+          <input class="search-input" id="tx-search" placeholder="Search…" />
+          <button class="add-btn" id="toggle-form">+ Add</button>
+        </div>
+      </div>
+
+      <div class="card form-card" id="add-form" style="display:none">
+        <div class="card-title">New Transaction</div>
+        <div class="form-grid">
+          <select id="f-type">
+            <option value="expense">Expense</option>
+            <option value="income">Income</option>
+          </select>
+          <select id="f-cat"></select>
+          <input id="f-amount" type="number" placeholder="Amount ($)" />
+          <input id="f-note" type="text" placeholder="Note / description" class="span2" />
+          <input id="f-date" type="date" />
+        </div>
+        <button class="save-btn" id="save-tx">Save Transaction</button>
+      </div>
+
+      <div class="card">
+        <div class="tx-count" id="tx-count">0 transactions</div>
+        <div id="tx-list"></div>
+      </div>
+    </section>
+
+    <!-- ── PAGE: ANALYTICS ── -->
+    <section class="page" id="page-analytics">
+      <div class="charts-row">
+        <div class="card">
+          <div class="card-title">Monthly Comparison</div>
+          <div class="bar-chart-wrap">
+            <div class="bar-chart grouped" id="analytics-bars"></div>
+          </div>
+          <div class="bar-legend">
+            <span class="bl-dot green"></span>Income
+            <span style="margin:0 6px"></span><span class="bl-dot purple"></span>Expenses
+            <span style="margin:0 6px"></span><span class="bl-dot cyan"></span>Savings
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Spending by Category</div>
+          <div id="cat-bars"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Month-by-Month Breakdown</div>
+        <table class="summary-table" id="summary-table">
+          <thead>
+            <tr>
+              <th>Month</th><th>Income</th><th>Expenses</th><th>Savings</th><th>Rate</th>
+            </tr>
+          </thead>
+          <tbody id="summary-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
