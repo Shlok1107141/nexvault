@@ -1,22 +1,22 @@
 // ── Data ─────────────────────────────────────────────────────────────────────
- 
+
 const CATS = {
   expense: ["Food","Transport","Housing","Entertainment","Health","Shopping","Education","Travel","Other"],
   income:  ["Salary","Investment","Freelance","Other"],
 };
- 
+
 const CAT_COLOR = {
   Food:"#f59e0b", Transport:"#06b6d4", Housing:"#8b5cf6", Entertainment:"#ec4899",
   Health:"#ef4444", Shopping:"#f97316", Education:"#3b82f6", Travel:"#10b981",
   Salary:"#10b981", Investment:"#a78bfa", Freelance:"#22d3ee", Other:"#6b7280",
 };
- 
+
 const CAT_ICON = {
   Food:"🍕", Transport:"🚗", Housing:"🏠", Entertainment:"🎮", Health:"❤️",
   Shopping:"🛍️", Education:"📚", Travel:"✈️", Salary:"💼", Investment:"📈",
   Freelance:"💻", Other:"📦",
 };
- 
+
 let transactions = [
   {id:1,  type:"income",  cat:"Salary",        amount:5500, note:"Monthly salary",       date:"2026-04-01"},
   {id:2,  type:"expense", cat:"Housing",        amount:1200, note:"Rent",                 date:"2026-04-01"},
@@ -44,14 +44,14 @@ let transactions = [
   {id:24, type:"expense", cat:"Entertainment",  amount:50,   note:"Streaming services",    date:"2026-02-10"},
   {id:25, type:"expense", cat:"Education",      amount:29,   note:"Online course",         date:"2026-02-22"},
 ];
- 
+
 // ── Helpers ───────────────────────────────────────────────────────────────────
- 
-const fmt  = n => new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",minimumFractionDigits:2}).format(n);
-const fmtK = n => n >= 1000 ? `$${(n/1000).toFixed(1)}k` : fmt(n);
- 
+
+const fmt  = n => new Intl.NumberFormat("en-IN",{style:"currency",currency:"INR",minimumFractionDigits:2}).format(n);
+const fmtK = n => n >= 1000 ? `₹${(n/1000).toFixed(1)}k` : fmt(n);
+
 const totalBy = (type) => transactions.filter(t => t.type === type).reduce((s,t) => s + t.amount, 0);
- 
+
 function getMonthly() {
   const mm = {};
   transactions.forEach(t => {
@@ -61,19 +61,19 @@ function getMonthly() {
   });
   return Object.values(mm).sort((a,b) => a.k.localeCompare(b.k));
 }
- 
+
 function monthName(ym, opts={month:"short"}) {
   return new Date(ym+"-01").toLocaleString("default", opts);
 }
- 
+
 // ── Totals ────────────────────────────────────────────────────────────────────
- 
+
 function updateTotals() {
   const income  = totalBy("income");
   const expense = totalBy("expense");
   const balance = income - expense;
   const rate    = income ? ((balance/income)*100).toFixed(1) : 0;
- 
+
   // KPI cards
   document.getElementById("kpi-income").textContent  = fmtK(income);
   document.getElementById("kpi-expense").textContent = fmtK(expense);
@@ -81,11 +81,11 @@ function updateTotals() {
   kbEl.textContent = fmtK(balance);
   kbEl.className = "kpi-value " + (balance >= 0 ? "green" : "red");
   document.getElementById("kpi-rate").textContent = rate + "%";
- 
+
   // Topbar
   document.getElementById("top-income").textContent  = fmtK(income);
   document.getElementById("top-expense").textContent = fmtK(expense);
- 
+
   // Sidebar balance
   const sbEl = document.getElementById("sidebar-balance");
   sbEl.textContent = fmtK(Math.abs(balance));
@@ -93,25 +93,25 @@ function updateTotals() {
   document.getElementById("sidebar-balance-sub").textContent =
     balance >= 0 ? "↑ positive balance" : "↓ negative balance";
 }
- 
+
 // ── Donut chart (pure SVG) ────────────────────────────────────────────────────
- 
+
 function renderDonut() {
   const catMap = {};
   transactions.filter(t => t.type === "expense").forEach(t => {
     catMap[t.cat] = (catMap[t.cat]||0) + t.amount;
   });
   const total = Object.values(catMap).reduce((s,v) => s+v, 0);
- 
+
   document.getElementById("donut-total").textContent = fmtK(total);
- 
+
   const entries = Object.entries(catMap).sort((a,b) => b[1]-a[1]);
   const svg = document.getElementById("donut-svg");
   svg.innerHTML = "";
- 
+
   const cx=90, cy=90, r=72, ri=48;
   let angle = -Math.PI/2;
- 
+
   entries.forEach(([cat, val]) => {
     const slice = (val/total) * Math.PI * 2;
     const x1 = cx + r*Math.cos(angle), y1 = cy + r*Math.sin(angle);
@@ -119,7 +119,7 @@ function renderDonut() {
     const ix1 = cx + ri*Math.cos(angle), iy1 = cy + ri*Math.sin(angle);
     const ix2 = cx + ri*Math.cos(angle+slice), iy2 = cy + ri*Math.sin(angle+slice);
     const large = slice > Math.PI ? 1 : 0;
- 
+
     const path = document.createElementNS("http://www.w3.org/2000/svg","path");
     path.setAttribute("d",
       `M${x1},${y1} A${r},${r} 0 ${large},1 ${x2},${y2}
@@ -131,7 +131,7 @@ function renderDonut() {
     svg.appendChild(path);
     angle += slice;
   });
- 
+
   // Legend
   const leg = document.getElementById("donut-legend");
   leg.innerHTML = entries.slice(0,6).map(([cat]) => `
@@ -141,15 +141,15 @@ function renderDonut() {
     </div>
   `).join("");
 }
- 
+
 // ── Bar chart ─────────────────────────────────────────────────────────────────
- 
+
 function renderBarChart() {
   const monthly = getMonthly();
   const maxVal  = Math.max(...monthly.map(m => Math.max(m.income, m.expense)), 1);
   const container = document.getElementById("bar-chart");
   container.innerHTML = "";
- 
+
   monthly.forEach(m => {
     const iH = Math.round((m.income  / maxVal) * 140);
     const eH = Math.round((m.expense / maxVal) * 140);
@@ -165,9 +165,9 @@ function renderBarChart() {
     container.appendChild(g);
   });
 }
- 
+
 // ── Recent transactions list ──────────────────────────────────────────────────
- 
+
 function renderRecent() {
   const list = [...transactions]
     .sort((a,b) => new Date(b.date)-new Date(a.date))
@@ -175,7 +175,7 @@ function renderRecent() {
   document.getElementById("recent-list").innerHTML =
     list.length ? list.map(txHTML).join("") : `<div class="empty">No transactions yet</div>`;
 }
- 
+
 function txHTML(tx) {
   const isInc = tx.type === "income";
   return `
@@ -189,21 +189,21 @@ function txHTML(tx) {
     </div>
   `;
 }
- 
+
 // ── Transactions page ─────────────────────────────────────────────────────────
- 
+
 let txFilter = "all";
- 
+
 function renderTxList() {
   const search = document.getElementById("tx-search").value.toLowerCase();
   const list   = [...transactions]
     .filter(t => txFilter === "all" || t.type === txFilter)
     .filter(t => !search || (t.note+t.cat).toLowerCase().includes(search))
     .sort((a,b) => new Date(b.date)-new Date(a.date));
- 
+
   document.getElementById("tx-count").textContent =
     `${list.length} transaction${list.length !== 1 ? "s" : ""}`;
- 
+
   document.getElementById("tx-list").innerHTML = list.length
     ? list.map(tx => `
         <div class="tx-row">
@@ -219,7 +219,7 @@ function renderTxList() {
         </div>
       `).join("")
     : `<div class="empty">No transactions found</div>`;
- 
+
   // Delete buttons
   document.querySelectorAll(".tx-del").forEach(btn => {
     btn.addEventListener("click", () => {
@@ -228,7 +228,7 @@ function renderTxList() {
     });
   });
 }
- 
+
 // Pill filter
 document.querySelectorAll(".pill").forEach(btn => {
   btn.addEventListener("click", () => {
@@ -238,16 +238,16 @@ document.querySelectorAll(".pill").forEach(btn => {
     renderTxList();
   });
 });
- 
+
 // Search
 document.getElementById("tx-search").addEventListener("input", renderTxList);
- 
+
 // Toggle add form
 document.getElementById("toggle-form").addEventListener("click", () => {
   const f = document.getElementById("add-form");
   f.style.display = f.style.display === "none" ? "block" : "none";
 });
- 
+
 // Populate category select
 function populateCatSelect() {
   const typeEl = document.getElementById("f-type");
@@ -256,7 +256,7 @@ function populateCatSelect() {
 }
 document.getElementById("f-type").addEventListener("change", populateCatSelect);
 populateCatSelect();
- 
+
 // Save transaction
 document.getElementById("save-tx").addEventListener("click", () => {
   const type   = document.getElementById("f-type").value;
@@ -264,22 +264,22 @@ document.getElementById("save-tx").addEventListener("click", () => {
   const amount = parseFloat(document.getElementById("f-amount").value);
   const note   = document.getElementById("f-note").value.trim() || cat;
   const date   = document.getElementById("f-date").value;
- 
+
   if (!amount || !date) { alert("Please fill in amount and date."); return; }
- 
+
   transactions.push({ id: Date.now(), type, cat, amount, note, date });
   document.getElementById("f-amount").value = "";
   document.getElementById("f-note").value   = "";
   document.getElementById("add-form").style.display = "none";
   renderAll();
 });
- 
+
 // ── Analytics page ────────────────────────────────────────────────────────────
- 
+
 function renderAnalytics() {
   const monthly = getMonthly();
   const maxVal  = Math.max(...monthly.map(m => Math.max(m.income, m.expense, m.income-m.expense)), 1);
- 
+
   // Grouped bar chart
   const abars = document.getElementById("analytics-bars");
   abars.innerHTML = "";
@@ -300,7 +300,7 @@ function renderAnalytics() {
     `;
     abars.appendChild(g);
   });
- 
+
   // Category horizontal bars
   const catMap = {};
   transactions.filter(t => t.type === "expense").forEach(t => {
@@ -318,7 +318,7 @@ function renderAnalytics() {
       <div class="cat-bar-val">${fmtK(val)}</div>
     </div>
   `).join("");
- 
+
   // Summary table
   const tbody = document.getElementById("summary-body");
   tbody.innerHTML = monthly.map(m => {
@@ -344,27 +344,27 @@ function renderAnalytics() {
     `;
   }).join("");
 }
- 
+
 // ── Navigation ────────────────────────────────────────────────────────────────
- 
+
 const PAGE_LABELS = { dashboard:"Dashboard", transactions:"Transactions", analytics:"Analytics" };
- 
+
 document.querySelectorAll(".nav-btn").forEach(btn => {
   btn.addEventListener("click", () => {
     const target = btn.dataset.page;
- 
+
     document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
- 
+
     document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
     document.getElementById("page-"+target).classList.add("active");
- 
+
     document.getElementById("page-title").textContent = PAGE_LABELS[target];
   });
 });
- 
+
 // ── Init ──────────────────────────────────────────────────────────────────────
- 
+
 function renderAll() {
   updateTotals();
   renderDonut();
@@ -373,10 +373,10 @@ function renderAll() {
   renderTxList();
   renderAnalytics();
 }
- 
+
 // Set today's date in topbar and form default
 const today = new Date().toLocaleDateString("en-US",{weekday:"long",year:"numeric",month:"long",day:"numeric"});
 document.getElementById("page-date").textContent = today;
 document.getElementById("f-date").value = new Date().toISOString().slice(0,10);
- 
+
 renderAll();
