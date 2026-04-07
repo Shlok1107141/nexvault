@@ -1,4 +1,4 @@
-/* ── Variables ── */
+
 :root {
   --bg:       #060609;
   --border:   rgba(139, 92, 246, 0.18);
@@ -15,7 +15,7 @@
   --font-body:    'DM Sans', sans-serif;
 }
  
-/* ── Reset ── */
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
  
 body {
@@ -47,7 +47,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   filter: invert(.5) sepia(1) saturate(4) hue-rotate(200deg); cursor: pointer;
 }
  
-/* ── Sidebar ── */
+
 .sidebar {
   width: 224px; flex-shrink: 0;
   background: linear-gradient(180deg, rgba(14,9,26,.98) 0%, rgba(7,5,12,.99) 100%);
@@ -98,10 +98,10 @@ nav { display: flex; flex-direction: column; gap: 3px; }
 .balance-amount.neg { color: var(--red); }
 .balance-sub { font-size: 10px; color: var(--muted); margin-top: 5px; }
  
-/* ── Main ── */
+
 .main { flex: 1; overflow: auto; min-width: 0; position: relative; z-index: 1; }
  
-/* ── Topbar ── */
+
 .topbar {
   position: sticky; top: 0; z-index: 10;
   background: rgba(6,6,9,.88);
@@ -128,7 +128,7 @@ nav { display: flex; flex-direction: column; gap: 3px; }
 .purple { color: var(--purple-l) !important; }
 .cyan   { color: var(--cyan)     !important; }
  
-/* ── Pages ── */
+
 .page { display: none; padding: 24px 26px; animation: fadeUp .28s ease; }
 .page.active { display: block; }
 @keyframes fadeUp {
@@ -136,7 +136,7 @@ nav { display: flex; flex-direction: column; gap: 3px; }
   to   { opacity: 1; transform: translateY(0); }
 }
  
-/* ── KPI grid ── */
+
 .kpi-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 13px; margin-bottom: 18px; }
 .kpi-card {
   background: var(--glass-bg); border: 1px solid var(--border); border-radius: 16px;
@@ -149,7 +149,7 @@ nav { display: flex; flex-direction: column; gap: 3px; }
 .kpi-label { font-size: 9px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 9px; }
 .kpi-value { font-family: var(--font-display); font-size: 25px; font-weight: 800; line-height: 1; }
  
-/* ── Cards ── */
+
 .card {
   background: var(--glass-bg); border: 1px solid var(--border); border-radius: 16px;
   padding: 22px; margin-bottom: 14px;
@@ -157,11 +157,11 @@ nav { display: flex; flex-direction: column; gap: 3px; }
 }
 .card-title { font-family: var(--font-display); font-size: 14px; font-weight: 700; margin-bottom: 16px; letter-spacing: -.2px; }
  
-/* ── Charts row ── */
+
 .charts-row { display: grid; grid-template-columns: 1fr 1.55fr; gap: 14px; margin-bottom: 14px; }
 .charts-row .card { margin-bottom: 0; }
  
-/* ── Donut ── */
+
 .donut-wrap { position: relative; display: flex; justify-content: center; margin-bottom: 14px; }
 .donut-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); text-align: center; pointer-events: none; }
 .donut-total { font-family: var(--font-display); font-size: 18px; font-weight: 800; }
@@ -170,7 +170,7 @@ nav { display: flex; flex-direction: column; gap: 3px; }
 .legend-item { display: flex; align-items: center; gap: 6px; font-size: 10px; color: var(--muted); }
 .legend-dot  { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
  
-/* ── Bar charts ── */
+
 .bar-chart-wrap { overflow-x: auto; margin-bottom: 10px; }
 .bar-chart { display: flex; align-items: flex-end; gap: 10px; min-height: 160px; padding: 0 2px; }
 .bar-group { display: flex; flex-direction: column; align-items: center; gap: 5px; flex: 1; min-width: 36px; }
@@ -184,14 +184,14 @@ nav { display: flex; flex-direction: column; gap: 3px; }
 .bl-dot.purple { background: var(--purple); }
 .bl-dot.cyan   { background: var(--cyan); }
  
-/* ── Category bars ── */
+
 .cat-bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 11px; }
 .cat-bar-label { font-size: 11px; color: var(--muted); width: 94px; flex-shrink: 0; text-align: right; }
 .cat-bar-track { flex: 1; height: 6px; background: rgba(255,255,255,.05); border-radius: 3px; overflow: hidden; }
 .cat-bar-fill  { height: 100%; border-radius: 3px; transition: width .5s ease; }
 .cat-bar-val   { font-size: 11px; color: var(--muted); width: 64px; flex-shrink: 0; }
  
-/* ── Transaction row ── */
+
 .tx-row {
   display: flex; align-items: center; gap: 11px; padding: 11px 13px;
   border-radius: 12px; background: rgba(255,255,255,.02);
@@ -210,8 +210,7 @@ nav { display: flex; flex-direction: column; gap: 3px; }
 }
 .tx-del:hover { opacity: .8; background: rgba(248,113,113,.1); color: var(--red); }
 .empty { text-align: center; color: var(--muted); padding: 42px 0; font-size: 13px; }
- 
-/* ── Transactions toolbar ── */
+
 .tx-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 10px; }
 .pill-group { display: flex; gap: 5px; }
 .pill {
@@ -237,7 +236,7 @@ nav { display: flex; flex-direction: column; gap: 3px; }
 }
 .add-btn:hover { opacity: .88; transform: translateY(-1px); }
  
-/* ── Add form ── */
+
 .form-card { margin-bottom: 14px; }
 .form-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 9px; margin-bottom: 14px; }
 .form-grid input,
@@ -258,7 +257,7 @@ nav { display: flex; flex-direction: column; gap: 3px; }
 .save-btn:hover { opacity: .88; }
 .tx-count { font-size: 11px; color: var(--muted); margin-bottom: 12px; }
  
-/* ── Summary table ── */
+
 .summary-table { width: 100%; border-collapse: collapse; font-size: 13px; }
 .summary-table th {
   color: var(--muted); font-size: 10px; font-weight: 500; text-align: left;
@@ -270,7 +269,7 @@ nav { display: flex; flex-direction: column; gap: 3px; }
 .rate-bar-track { flex: 1; height: 5px; background: rgba(255,255,255,.05); border-radius: 3px; overflow: hidden; }
 .rate-bar-fill  { height: 100%; border-radius: 3px; }
  
-/* ── Responsive ── */
+
 @media (max-width: 860px) {
   .kpi-grid   { grid-template-columns: repeat(2,1fr); }
   .charts-row { grid-template-columns: 1fr; }
