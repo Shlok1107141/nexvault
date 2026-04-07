@@ -1,4 +1,4 @@
-// ── Data ─────────────────────────────────────────────────────────────────────
+
 
 const CATS = {
   expense: ["Food","Transport","Housing","Entertainment","Health","Shopping","Education","Travel","Other"],
@@ -45,7 +45,7 @@ let transactions = [
   {id:25, type:"expense", cat:"Education",      amount:29,   note:"Online course",         date:"2026-02-22"},
 ];
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
+
 
 const fmt  = n => new Intl.NumberFormat("en-IN",{style:"currency",currency:"INR",minimumFractionDigits:2}).format(n);
 const fmtK = n => n >= 1000 ? `₹${(n/1000).toFixed(1)}k` : fmt(n);
@@ -66,7 +66,7 @@ function monthName(ym, opts={month:"short"}) {
   return new Date(ym+"-01").toLocaleString("default", opts);
 }
 
-// ── Totals ────────────────────────────────────────────────────────────────────
+
 
 function updateTotals() {
   const income  = totalBy("income");
@@ -74,7 +74,7 @@ function updateTotals() {
   const balance = income - expense;
   const rate    = income ? ((balance/income)*100).toFixed(1) : 0;
 
-  // KPI cards
+  
   document.getElementById("kpi-income").textContent  = fmtK(income);
   document.getElementById("kpi-expense").textContent = fmtK(expense);
   const kbEl = document.getElementById("kpi-balance");
@@ -82,11 +82,11 @@ function updateTotals() {
   kbEl.className = "kpi-value " + (balance >= 0 ? "green" : "red");
   document.getElementById("kpi-rate").textContent = rate + "%";
 
-  // Topbar
+  
   document.getElementById("top-income").textContent  = fmtK(income);
   document.getElementById("top-expense").textContent = fmtK(expense);
 
-  // Sidebar balance
+  
   const sbEl = document.getElementById("sidebar-balance");
   sbEl.textContent = fmtK(Math.abs(balance));
   sbEl.className = "balance-amount" + (balance < 0 ? " neg" : "");
@@ -94,7 +94,7 @@ function updateTotals() {
     balance >= 0 ? "↑ positive balance" : "↓ negative balance";
 }
 
-// ── Donut chart (pure SVG) ────────────────────────────────────────────────────
+
 
 function renderDonut() {
   const catMap = {};
@@ -142,7 +142,7 @@ function renderDonut() {
   `).join("");
 }
 
-// ── Bar chart ─────────────────────────────────────────────────────────────────
+
 
 function renderBarChart() {
   const monthly = getMonthly();
@@ -166,7 +166,6 @@ function renderBarChart() {
   });
 }
 
-// ── Recent transactions list ──────────────────────────────────────────────────
 
 function renderRecent() {
   const list = [...transactions]
@@ -190,7 +189,7 @@ function txHTML(tx) {
   `;
 }
 
-// ── Transactions page ─────────────────────────────────────────────────────────
+
 
 let txFilter = "all";
 
@@ -220,7 +219,7 @@ function renderTxList() {
       `).join("")
     : `<div class="empty">No transactions found</div>`;
 
-  // Delete buttons
+  
   document.querySelectorAll(".tx-del").forEach(btn => {
     btn.addEventListener("click", () => {
       transactions = transactions.filter(t => t.id !== Number(btn.dataset.id));
@@ -229,7 +228,7 @@ function renderTxList() {
   });
 }
 
-// Pill filter
+
 document.querySelectorAll(".pill").forEach(btn => {
   btn.addEventListener("click", () => {
     document.querySelectorAll(".pill").forEach(p => p.classList.remove("active"));
@@ -239,16 +238,16 @@ document.querySelectorAll(".pill").forEach(btn => {
   });
 });
 
-// Search
+
 document.getElementById("tx-search").addEventListener("input", renderTxList);
 
-// Toggle add form
+
 document.getElementById("toggle-form").addEventListener("click", () => {
   const f = document.getElementById("add-form");
   f.style.display = f.style.display === "none" ? "block" : "none";
 });
 
-// Populate category select
+
 function populateCatSelect() {
   const typeEl = document.getElementById("f-type");
   const catEl  = document.getElementById("f-cat");
@@ -257,7 +256,7 @@ function populateCatSelect() {
 document.getElementById("f-type").addEventListener("change", populateCatSelect);
 populateCatSelect();
 
-// Save transaction
+
 document.getElementById("save-tx").addEventListener("click", () => {
   const type   = document.getElementById("f-type").value;
   const cat    = document.getElementById("f-cat").value;
@@ -274,13 +273,13 @@ document.getElementById("save-tx").addEventListener("click", () => {
   renderAll();
 });
 
-// ── Analytics page ────────────────────────────────────────────────────────────
+
 
 function renderAnalytics() {
   const monthly = getMonthly();
   const maxVal  = Math.max(...monthly.map(m => Math.max(m.income, m.expense, m.income-m.expense)), 1);
 
-  // Grouped bar chart
+  
   const abars = document.getElementById("analytics-bars");
   abars.innerHTML = "";
   monthly.forEach(m => {
@@ -301,7 +300,7 @@ function renderAnalytics() {
     abars.appendChild(g);
   });
 
-  // Category horizontal bars
+ 
   const catMap = {};
   transactions.filter(t => t.type === "expense").forEach(t => {
     catMap[t.cat] = (catMap[t.cat]||0) + t.amount;
@@ -319,7 +318,7 @@ function renderAnalytics() {
     </div>
   `).join("");
 
-  // Summary table
+  
   const tbody = document.getElementById("summary-body");
   tbody.innerHTML = monthly.map(m => {
     const s = m.income - m.expense;
@@ -345,7 +344,7 @@ function renderAnalytics() {
   }).join("");
 }
 
-// ── Navigation ────────────────────────────────────────────────────────────────
+
 
 const PAGE_LABELS = { dashboard:"Dashboard", transactions:"Transactions", analytics:"Analytics" };
 
@@ -363,7 +362,7 @@ document.querySelectorAll(".nav-btn").forEach(btn => {
   });
 });
 
-// ── Init ──────────────────────────────────────────────────────────────────────
+
 
 function renderAll() {
   updateTotals();
@@ -374,7 +373,7 @@ function renderAll() {
   renderAnalytics();
 }
 
-// Set today's date in topbar and form default
+
 const today = new Date().toLocaleDateString("en-US",{weekday:"long",year:"numeric",month:"long",day:"numeric"});
 document.getElementById("page-date").textContent = today;
 document.getElementById("f-date").value = new Date().toISOString().slice(0,10);
