@@ -82,18 +82,6 @@ Crafted a bespoke **neo-purple glassmorphism** aesthetic inspired by modern fint
 
 ---
 
-## 🚀 Running Locally
-
-No installation needed. Just open `index.html` in any browser:
-
-```bash
-git clone https://github.com/Shlok1107141/nexvault.git
-cd nexvault
-open index.html   # or double-click the file
-```
-
----
-
 ## 📄 License
 
 MIT © 2026 Shlok
