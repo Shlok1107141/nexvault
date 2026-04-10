@@ -1,19 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>NexVault · Finance</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
 
-  
+  <!-- Star canvas sits behind everything -->
+  <canvas id="star-canvas"></canvas>
+
+  <!-- ── SIDEBAR ── -->
   <aside class="sidebar">
     <div class="logo">
-      <span class="logo-icon">⚡</span>
+      <div class="logo-mark">✦</div>
       <div>
         <div class="logo-name">NexVault</div>
         <div class="logo-sub">Finance Tracker</div>
@@ -22,27 +25,33 @@
 
     <nav>
       <button class="nav-btn active" data-page="dashboard">
-        <span>▦</span> Dashboard
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+        Dashboard
       </button>
       <button class="nav-btn" data-page="transactions">
-        <span>↕</span> Transactions
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 17V5m0 0L4 9m4-4 4 4M16 7v12m0 0 4-4m-4 4-4-4"/></svg>
+        Transactions
       </button>
       <button class="nav-btn" data-page="analytics">
-        <span>◫</span> Analytics
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>
+        Analytics
+      </button>
+      <button class="nav-btn" data-page="news">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8M15 18h-5M10 6h8v4h-8V6Z"/></svg>
+        Market News
       </button>
     </nav>
 
     <div class="balance-card">
       <div class="balance-label">NET BALANCE</div>
-      <div class="balance-amount" id="sidebar-balance">₹0.00</div>
+      <div class="balance-amount" id="sidebar-balance">₹0</div>
       <div class="balance-sub" id="sidebar-balance-sub">calculating…</div>
     </div>
   </aside>
 
-  
+  <!-- ── MAIN ── -->
   <main class="main">
 
-    
     <header class="topbar">
       <div>
         <div class="page-title" id="page-title">Dashboard</div>
@@ -51,38 +60,39 @@
       <div class="topbar-stats">
         <div class="topbar-stat">
           <div class="ts-label">Income</div>
-          <div class="ts-val green" id="top-income"> ₹0</div>
+          <div class="ts-val green" id="top-income">₹0</div>
         </div>
+        <div class="divider-v"></div>
         <div class="topbar-stat">
           <div class="ts-label">Expenses</div>
-          <div class="ts-val red" id="top-expense"> ₹0</div>
+          <div class="ts-val red" id="top-expense">₹0</div>
         </div>
         <div class="topbar-avatar">N</div>
       </div>
     </header>
 
-   
+    <!-- ── DASHBOARD ── -->
     <section class="page active" id="page-dashboard">
       <div class="kpi-grid">
         <div class="kpi-card">
-          <div class="kpi-emoji">💰</div>
+          <div class="kpi-glyph">✦</div>
           <div class="kpi-label">TOTAL INCOME</div>
-          <div class="kpi-value green" id="kpi-income"> ₹0</div>
+          <div class="kpi-value green" id="kpi-income">₹0</div>
         </div>
         <div class="kpi-card">
-          <div class="kpi-emoji">💸</div>
+          <div class="kpi-glyph">◈</div>
           <div class="kpi-label">TOTAL EXPENSES</div>
-          <div class="kpi-value red" id="kpi-expense"> ₹0</div>
+          <div class="kpi-value red" id="kpi-expense">₹0</div>
         </div>
         <div class="kpi-card">
-          <div class="kpi-emoji">⚖️</div>
+          <div class="kpi-glyph">◎</div>
           <div class="kpi-label">NET BALANCE</div>
-          <div class="kpi-value" id="kpi-balance"> ₹0</div>
+          <div class="kpi-value" id="kpi-balance">₹0</div>
         </div>
         <div class="kpi-card">
-          <div class="kpi-emoji">🎯</div>
+          <div class="kpi-glyph">⊹</div>
           <div class="kpi-label">SAVINGS RATE</div>
-          <div class="kpi-value purple" id="kpi-rate">0%</div>
+          <div class="kpi-value accent" id="kpi-rate">0%</div>
         </div>
       </div>
 
@@ -92,7 +102,7 @@
           <div class="donut-wrap">
             <svg id="donut-svg" viewBox="0 0 180 180" width="180" height="180"></svg>
             <div class="donut-center">
-              <div class="donut-total" id="donut-total"> ₹0</div>
+              <div class="donut-total" id="donut-total">₹0</div>
               <div class="donut-sub">total spent</div>
             </div>
           </div>
@@ -106,7 +116,8 @@
           </div>
           <div class="bar-legend">
             <span class="bl-dot green"></span>Income
-            <span style="margin:0 6px"></span><span class="bl-dot purple"></span>Expenses
+            <span class="bl-sep"></span>
+            <span class="bl-dot red"></span>Expenses
           </div>
         </div>
       </div>
@@ -117,7 +128,7 @@
       </div>
     </section>
 
-    
+    <!-- ── TRANSACTIONS ── -->
     <section class="page" id="page-transactions">
       <div class="tx-toolbar">
         <div class="pill-group">
@@ -126,12 +137,15 @@
           <button class="pill" data-filter="expense">Expense</button>
         </div>
         <div class="tx-right">
-          <input class="search-input" id="tx-search" placeholder="Search…" />
+          <div class="search-wrap">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <input class="search-input" id="tx-search" placeholder="Search…"/>
+          </div>
           <button class="add-btn" id="toggle-form">+ Add</button>
         </div>
       </div>
 
-      <div class="card form-card" id="add-form" style="display:none">
+      <div class="card form-card hidden" id="add-form">
         <div class="card-title">New Transaction</div>
         <div class="form-grid">
           <select id="f-type">
@@ -139,9 +153,9 @@
             <option value="income">Income</option>
           </select>
           <select id="f-cat"></select>
-          <input id="f-amount" type="number" placeholder="Amount (₹)" />
-          <input id="f-note" type="text" placeholder="Note / description" class="span2" />
-          <input id="f-date" type="date" />
+          <input id="f-amount" type="number" placeholder="Amount (₹)"/>
+          <input id="f-note" type="text" placeholder="Note / description" class="span2"/>
+          <input id="f-date" type="date"/>
         </div>
         <button class="save-btn" id="save-tx">Save Transaction</button>
       </div>
@@ -152,21 +166,22 @@
       </div>
     </section>
 
-    
+    <!-- ── ANALYTICS ── -->
     <section class="page" id="page-analytics">
       <div class="charts-row">
         <div class="card">
           <div class="card-title">Monthly Comparison</div>
           <div class="bar-chart-wrap">
-            <div class="bar-chart grouped" id="analytics-bars"></div>
+            <div class="bar-chart" id="analytics-bars"></div>
           </div>
           <div class="bar-legend">
             <span class="bl-dot green"></span>Income
-            <span style="margin:0 6px"></span><span class="bl-dot purple"></span>Expenses
-            <span style="margin:0 6px"></span><span class="bl-dot cyan"></span>Savings
+            <span class="bl-sep"></span>
+            <span class="bl-dot red"></span>Expenses
+            <span class="bl-sep"></span>
+            <span class="bl-dot accent"></span>Savings
           </div>
         </div>
-
         <div class="card">
           <div class="card-title">Spending by Category</div>
           <div id="cat-bars"></div>
@@ -175,15 +190,32 @@
 
       <div class="card">
         <div class="card-title">Month-by-Month Breakdown</div>
-        <table class="summary-table" id="summary-table">
+        <table class="summary-table">
           <thead>
-            <tr>
-              <th>Month</th><th>Income</th><th>Expenses</th><th>Savings</th><th>Rate</th>
-            </tr>
+            <tr><th>Month</th><th>Income</th><th>Expenses</th><th>Savings</th><th>Rate</th></tr>
           </thead>
           <tbody id="summary-body"></tbody>
         </table>
       </div>
+    </section>
+
+    <!-- ── MARKET NEWS ── -->
+    <section class="page" id="page-news">
+      <div class="news-header">
+        <div>
+          <div class="card-title" style="margin-bottom:4px">Finance &amp; Geopolitical News</div>
+          <div class="news-subtitle">Live market intelligence &amp; global economy updates</div>
+        </div>
+        <div class="news-topics" id="news-topics">
+          <button class="news-pill active" data-topic="finance">Finance</button>
+          <button class="news-pill" data-topic="economy">Economy</button>
+          <button class="news-pill" data-topic="geopolitics">Geopolitics</button>
+          <button class="news-pill" data-topic="markets">Markets</button>
+        </div>
+      </div>
+
+      <div class="news-status" id="news-status"></div>
+      <div class="news-grid" id="news-grid"></div>
     </section>
 
   </main>
@@ -191,4 +223,3 @@
   <script src="app.js"></script>
 </body>
 </html>
-
